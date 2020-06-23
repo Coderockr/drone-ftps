@@ -1,6 +1,6 @@
 FROM alpine:edge
 
-RUN apk --no-cache add \
+RUN apk --no-cache add --update \
         libressl \
         lftp \
         bash

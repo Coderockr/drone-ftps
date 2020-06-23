@@ -38,10 +38,6 @@ else
     PLUGIN_CLEAN_DIR=""
 fi
 
-if [ -z "$PLUGIN_PARALLEL" ]; then
-    PLUGIN_PARALLEL="4"
-fi
-
 EXTRAS=""
 if [ "$PLUGIN_ONLY_NEWER" = true ]; then
     EXTRAS="$EXTRAS --only-newer"
@@ -63,6 +59,7 @@ for i in "${in_arr[@]}"; do
     PLUGIN_INCLUDE_STR="$PLUGIN_INCLUDE_STR -i $i"
 done
 
+lftp --version
 lftp -e "set xfer:log 1; \
   set ftp:ssl-allow $PLUGIN_SECURE; \
   set ftp:ssl-force $PLUGIN_SECURE; \
@@ -72,4 +69,4 @@ lftp -e "set xfer:log 1; \
   set net:max-retries 3; \
   $PLUGIN_CLEAN_DIR; \
   mirror --verbose $PLUGIN_CHMOD -R $PLUGIN_INCLUDE_STR $PLUGIN_EXCLUDE_STR $(pwd)$PLUGIN_SRC_DIR $PLUGIN_DEST_DIR" \
-  -u $FTP_USERNAME,$FTP_PASSWORD --paralell=$PLUGIN_PARALLEL $EXTRAS $PLUGIN_HOSTNAME
+  -u $FTP_USERNAME,$FTP_PASSWORD $EXTRAS $PLUGIN_HOSTNAME
