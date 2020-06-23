@@ -38,13 +38,9 @@ else
     PLUGIN_CLEAN_DIR=""
 fi
 
-EXTRAS=""
+EXTRAS="-R"
 if [ "$PLUGIN_ONLY_NEWER" = true ]; then
-    EXTRAS="$EXTRAS --only-newer"
-fi
-
-if [ "$PLUGIN_IGNORE_TIME" = true ]; then
-    EXTRAS="$EXTRAS --ignore-time"
+    EXTRAS="${EXTRAS}n --ignore-time"
 fi
 
 PLUGIN_EXCLUDE_STR=""
@@ -68,5 +64,5 @@ lftp -e "set xfer:log 1; \
   set ssl:check-hostname $PLUGIN_VERIFY; \
   set net:max-retries 3; \
   $PLUGIN_CLEAN_DIR; \
-  mirror --verbose $PLUGIN_CHMOD -R $PLUGIN_INCLUDE_STR $PLUGIN_EXCLUDE_STR $(pwd)$PLUGIN_SRC_DIR $PLUGIN_DEST_DIR" \
-  -u $FTP_USERNAME,$FTP_PASSWORD $EXTRAS $PLUGIN_HOSTNAME
+  mirror --verbose=2 $PLUGIN_CHMOD $EXTRAS $PLUGIN_INCLUDE_STR $PLUGIN_EXCLUDE_STR $(pwd)$PLUGIN_SRC_DIR $PLUGIN_DEST_DIR" \
+  -u $FTP_USERNAME,$FTP_PASSWORD $PLUGIN_HOSTNAME
